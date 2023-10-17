@@ -89,6 +89,9 @@ void startGame(){
           ++cont;
         }
       }
+      if(cont!=0){
+        board[i][j] = cont;
+      }
     }
   }
 
