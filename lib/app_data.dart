@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class AppData with ChangeNotifier {
 
   String numMines = "5x5";
   String sizeBoard = "9x9";
+  Random rand = Random();
 
   List<List<String>> board = [];
   bool gameIsOver = false;
@@ -15,6 +17,85 @@ class AppData with ChangeNotifier {
   ui.Image? imagePlayer;
   ui.Image? imageOpponent;
   bool imagesReady = false;
+
+void startGame(){
+  board = [];
+
+  //Instanciamos la matriz
+  int numM = int.parse(numMines[0]);
+  int sizeB = int.parse(sizeBoard[0]);
+  for(int i=0; i<sizeB; ++i){
+    List<String> row = [];
+    for(int j=0; j<sizeB; ++j){
+      row.add("");
+    }
+    board.add(row);
+  }
+
+  //Generamos bombas aleatoriamente
+  for(int i=0; i<numM; ++i){
+    while(true){
+      int posX = rand.nextInt(sizeB);
+      int posY = rand.nextInt(sizeB);
+      if(board[posY][posX] != "."){
+        //print("PosX: " + posX.toString() + " " + "PosY: " + posY.toString());
+        board[posY][posX] = ".";
+        break;
+      }
+    }
+  }
+
+  //Introducimos los numeros
+  for(int i=0; i<sizeB; ++i){
+    for(int j=0; j<sizeB; ++j){
+      int cont = 0;
+      if(i+1 < sizeB && j-1 > -1){// TOP-L
+        if(board[i+1][j-1]=="."){
+          ++cont;
+        }
+      }
+      if(i+1 < sizeB){// TOP-C
+        if(board[i+1][j]=="."){
+          ++cont;
+        }
+      }
+      if(i+1 < sizeB && j+1 < sizeB){// TOP-R
+        if(board[i+1][j+1]=="."){
+          ++cont;
+        }
+      }
+      if(j-1 > -1){// CENTER-L
+        if(board[i][j-1]=="."){
+          ++cont;
+        }
+      }
+      if(j+1 > sizeB){// CENTER-R
+        if(board[i][j+1]=="."){
+          ++cont;
+        }
+      } 
+      if(i-1 < -1 && j-1 > -1){// BOT-L
+        if(board[i-1][j-1]=="."){
+          ++cont;
+        }
+      }
+      if(i-1 < -1){// BOT-C
+        if(board[i-1][j]=="."){
+          ++cont;
+        }
+      }
+      if(i-1 < -1 && j+1 > sizeB){// BOT-R
+        if(board[i-1][j+1]=="."){
+          ++cont;
+        }
+      }
+    }
+  }
+
+  board.forEach(print);
+}
+
+
 
   void resetGame() {
     board = [
@@ -28,6 +109,7 @@ class AppData with ChangeNotifier {
 
   // Fa una jugada, primer el jugador després la maquina
   void playMove(int row, int col) {
+    startGame();
     if (board[row][col] == '-') {
       board[row][col] = 'X';
       checkGameWinner();
