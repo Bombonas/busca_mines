@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class AppData with ChangeNotifier {
   // App status
 
-  int numMines = 5;
-  int sizeBoard = 9;
+  String numMines = "5x5";
+  String sizeBoard = "9x9";
 
   List<List<String>> board = [];
   bool gameIsOver = false;

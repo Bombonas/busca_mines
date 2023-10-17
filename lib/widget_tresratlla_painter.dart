@@ -16,8 +16,8 @@ class WidgetTresRatllaPainter extends CustomPainter {
       ..strokeWidth = 5.0;
 
     // Definim els punts on es creuaran les línies verticals
-    final double firstVertical = size.width / 3;
-    final double secondVertical = 2 * size.width / 3;
+    final double firstVertical = size.width / 9;
+    final double secondVertical = 2 * size.width / 9;
 
     // Dibuixem les línies verticals
     canvas.drawLine(
@@ -26,8 +26,8 @@ class WidgetTresRatllaPainter extends CustomPainter {
         Offset(secondVertical, 0), Offset(secondVertical, size.height), paint);
 
     // Definim els punts on es creuaran les línies horitzontals
-    final double firstHorizontal = size.height / 3;
-    final double secondHorizontal = 2 * size.height / 3;
+    final double firstHorizontal = size.height / 9;
+    final double secondHorizontal = 2 * size.height / 9;
 
     // Dibuixem les línies horitzontals
     canvas.drawLine(
@@ -106,17 +106,6 @@ class WidgetTresRatllaPainter extends CustomPainter {
         if (appData.board[i][j] == 'X') {
           // Dibuixar una X amb el color del jugador
           Color color = Colors.blue;
-          switch (appData.colorPlayer) {
-            case "Blau":
-              color = Colors.blue;
-              break;
-            case "Verd":
-              color = Colors.green;
-              break;
-            case "Gris":
-              color = Colors.grey;
-              break;
-          }
 
           double x0 = j * cellWidth;
           double y0 = i * cellHeight;
@@ -128,17 +117,6 @@ class WidgetTresRatllaPainter extends CustomPainter {
         } else if (appData.board[i][j] == 'O') {
           // Dibuixar una O amb el color de l'oponent
           Color color = Colors.blue;
-          switch (appData.colorOpponent) {
-            case "Vermell":
-              color = Colors.red;
-              break;
-            case "Taronja":
-              color = Colors.orange;
-              break;
-            case "Marró":
-              color = Colors.brown;
-              break;
-          }
 
           double x0 = j * cellWidth;
           double y0 = i * cellHeight;

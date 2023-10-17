@@ -10,20 +10,20 @@ class LayoutSettings extends StatefulWidget {
 }
 
 class LayoutSettingsState extends State<LayoutSettings> {
-  List<String> playerColors = ["Verd", "Blau", "Gris"];
-  List<String> opponentColors = ["Vermell", "Taronja", "Marró"];
+  List<String> boardSize = ["9x9", "15x15"];
+  List<String> mineNumber = ["5", "10", "20"];
 
   // Mostra el CupertinoPicker en un diàleg.
   void _showPicker(String type) {
-    List<String> options = type == "player" ? playerColors : opponentColors;
+    List<String> options = type == "player" ? boardSize : mineNumber;
     String title = type == "player"
-        ? "Selecciona el color del jugador"
-        : "Selecciona el color de l'oponent";
+        ? "Selecciona la mida del taulell"
+        : "Selecciona el número de mines";
 
     // Troba l'índex de la opció actual a la llista d'opcions
     AppData appData = Provider.of<AppData>(context, listen: false);
     String currentValue =
-        type == "player" ? appData.colorPlayer : appData.colorOpponent;
+        type == "player" ? appData.sizeBoard : appData.numMines;
     int currentIndex = options.indexOf(currentValue);
     FixedExtentScrollController scrollController =
         FixedExtentScrollController(initialItem: currentIndex);
@@ -57,9 +57,9 @@ class LayoutSettingsState extends State<LayoutSettings> {
                   scrollController: scrollController,
                   onSelectedItemChanged: (index) {
                     if (type == "player") {
-                      appData.colorPlayer = options[index];
+                      appData.sizeBoard = options[index];
                     } else {
-                      appData.colorOpponent = options[index];
+                      appData.numMines = options[index];
                     }
                     // Actualitzar el widget
                     setState(() {});
@@ -94,17 +94,17 @@ class LayoutSettingsState extends State<LayoutSettings> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text("Color jugador: "),
+              const Text("Mida tauler: "),
               CupertinoButton(
                 onPressed: () => _showPicker("player"),
-                child: Text(appData.colorPlayer),
+                child: Text(appData.sizeBoard),
               )
             ]),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text("Color de l'oponent: "),
+              const Text("Número de mines: "),
               CupertinoButton(
                 onPressed: () => _showPicker("opponent"),
-                child: Text(appData.colorOpponent),
+                child: Text(appData.numMines),
               )
             ]),
           ],
