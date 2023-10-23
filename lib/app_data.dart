@@ -130,6 +130,8 @@ class AppData with ChangeNotifier {
     }
   }
 
+  
+
   // Fa una jugada de la màquina, només busca la primera posició lliure
   void machinePlay() {
     bool moveMade = false;

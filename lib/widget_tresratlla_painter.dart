@@ -110,7 +110,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
 
           drawImage(canvas, appData.imagePlayer!, x0, y0, x1, y1);
           drawCross(canvas, x0, y0, x1, y1, color, 5.0);
-        } else if (appData.board[i][j] == 'O') {
+        } else  {// if (appData.board[i][j] == 'O')
           // Dibuixar una O amb el color de l'oponent
           Color color = Colors.blue;
 
