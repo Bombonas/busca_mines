@@ -6,6 +6,7 @@ import 'app_data.dart';
 // S'encarrega del dibuix personalitzat del joc
 class WidgetTresRatllaPainter extends CustomPainter {
   final AppData appData;
+  int colrow = 0;
 
   WidgetTresRatllaPainter(this.appData);
 
@@ -15,25 +16,20 @@ class WidgetTresRatllaPainter extends CustomPainter {
       ..color = Colors.black
       ..strokeWidth = 5.0;
 
-    // Definim els punts on es creuaran les línies verticals
-    final double firstVertical = size.width / appData.;
-    final double secondVertical = 2 * size.width / 9;
-
-    // Dibuixem les línies verticals
-    canvas.drawLine(
-        Offset(firstVertical, 0), Offset(firstVertical, size.height), paint);
-    canvas.drawLine(
-        Offset(secondVertical, 0), Offset(secondVertical, size.height), paint);
-
-    // Definim els punts on es creuaran les línies horitzontals
-    final double firstHorizontal = size.height / 9;
-    final double secondHorizontal = 2 * size.height / 9;
-
-    // Dibuixem les línies horitzontals
-    canvas.drawLine(
-        Offset(0, firstHorizontal), Offset(size.width, firstHorizontal), paint);
-    canvas.drawLine(Offset(0, secondHorizontal),
-        Offset(size.width, secondHorizontal), paint);
+    String board = appData.sizeBoard;
+    if (board == "9x9") {
+      colrow = 9;
+    } else {
+      colrow = 15;
+    }
+    for (int i = 0; i < colrow; i++) {
+      double vertical = i * (size.width / colrow);
+      canvas.drawLine(
+          Offset(vertical, 0), Offset(vertical, size.height), paint);
+      double horizontal = i * (size.height / colrow);
+      canvas.drawLine(
+          Offset(0, horizontal), Offset(size.width, horizontal), paint);
+    }
   }
 
   // Dibuixa la imatge centrada a una casella del taulell
@@ -98,11 +94,11 @@ class WidgetTresRatllaPainter extends CustomPainter {
   // Dibuixa el taulell de joc (creus i rodones)
   void drawBoardStatus(Canvas canvas, Size size) {
     // Dibuixar 'X' i 'O' del tauler
-    double cellWidth = size.width / 3;
-    double cellHeight = size.height / 3;
+    double cellWidth = size.width / colrow;
+    double cellHeight = size.height / colrow;
 
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < colrow; i++) {
+      for (int j = 0; j < colrow; j++) {
         if (appData.board[i][j] == 'X') {
           // Dibuixar una X amb el color del jugador
           Color color = Colors.blue;

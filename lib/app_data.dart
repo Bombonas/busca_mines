@@ -18,90 +18,95 @@ class AppData with ChangeNotifier {
   ui.Image? imageOpponent;
   bool imagesReady = false;
 
-void startGame(){
-  board = [];
+  void startGame() {
+    board = [];
 
-  //Instanciamos la matriz
-  int numM = int.parse(numMines);
-  int sizeB = int.parse(sizeBoard[0]);
-  for(int i=0; i<sizeB; ++i){
-    List<String> row = [];
-    for(int j=0; j<sizeB; ++j){
-      row.add(" ");
+    //Instanciamos la matriz
+    int numM = int.parse(numMines);
+    int sizeB = int.parse(sizeBoard[0]);
+    for (int i = 0; i < sizeB; ++i) {
+      List<String> row = [];
+      for (int j = 0; j < sizeB; ++j) {
+        row.add(" ");
+      }
+      board.add(row);
     }
-    board.add(row);
-  }
 
-  //Generamos bombas aleatoriamente
-  for(int i=0; i<numM; ++i){
-    while(true){
-      int posX = rand.nextInt(sizeB);
-      int posY = rand.nextInt(sizeB);
-      if(board[posY][posX] != "B"){
-        //print("PosX: " + posX.toString() + " " + "PosY: " + posY.toString());
-        board[posY][posX] = "B";
-        break;
+    //Generamos bombas aleatoriamente
+    for (int i = 0; i < numM; ++i) {
+      while (true) {
+        int posX = rand.nextInt(sizeB);
+        int posY = rand.nextInt(sizeB);
+        if (board[posY][posX] != "B") {
+          //print("PosX: " + posX.toString() + " " + "PosY: " + posY.toString());
+          board[posY][posX] = "B";
+          break;
+        }
       }
     }
-  }
 
-  //Introducimos los numeros
-  for(int i=0; i<sizeB; ++i){
-    for(int j=0; j<sizeB; ++j){
-      int cont = 0;
-      if(board[i][j] == " "){
-         if(i+1 < sizeB && j-1 > -1){// TOP-L
-          if(board[i+1][j-1]=="B"){
-            ++cont;
+    //Introducimos los numeros
+    for (int i = 0; i < sizeB; ++i) {
+      for (int j = 0; j < sizeB; ++j) {
+        int cont = 0;
+        if (board[i][j] == " ") {
+          if (i + 1 < sizeB && j - 1 > -1) {
+            // TOP-L
+            if (board[i + 1][j - 1] == "B") {
+              ++cont;
+            }
           }
-        }
-        if(i+1 < sizeB){// TOP-C
-          if(board[i+1][j]=="B"){
-            ++cont;
+          if (i + 1 < sizeB) {
+            // TOP-C
+            if (board[i + 1][j] == "B") {
+              ++cont;
+            }
           }
-        }
-        if(i+1 < sizeB && j+1 < sizeB){// TOP-R
-          if(board[i+1][j+1]=="B"){
-            ++cont;
+          if (i + 1 < sizeB && j + 1 < sizeB) {
+            // TOP-R
+            if (board[i + 1][j + 1] == "B") {
+              ++cont;
+            }
           }
-        }
-        if(j-1 > -1){// CENTER-L
-          if(board[i][j-1]=="B"){
-            ++cont;
+          if (j - 1 > -1) {
+            // CENTER-L
+            if (board[i][j - 1] == "B") {
+              ++cont;
+            }
           }
-        }
-        if(j+1 > sizeB){// CENTER-R
-          if(board[i][j+1]=="B"){
-            ++cont;
+          if (j + 1 > sizeB) {
+            // CENTER-R
+            if (board[i][j + 1] == "B") {
+              ++cont;
+            }
           }
-        } 
-        if(i-1 < -1 && j-1 > -1){// BOT-L
-          if(board[i-1][j-1]=="B"){
-            ++cont;
+          if (i - 1 < -1 && j - 1 > -1) {
+            // BOT-L
+            if (board[i - 1][j - 1] == "B") {
+              ++cont;
+            }
           }
-        }
-        if(i-1 < -1){// BOT-C
-          if(board[i-1][j]=="B"){
-            ++cont;
+          if (i - 1 < -1) {
+            // BOT-C
+            if (board[i - 1][j] == "B") {
+              ++cont;
+            }
           }
-        }
-        if(i-1 < -1 && j+1 > sizeB){// BOT-R
-          if(board[i-1][j+1]=="B"){
-            ++cont;
+          if (i - 1 < -1 && j + 1 > sizeB) {
+            // BOT-R
+            if (board[i - 1][j + 1] == "B") {
+              ++cont;
+            }
           }
-        }
-        if(cont!=0){
-          board[i][j] = cont.toString();
+          if (cont != 0) {
+            board[i][j] = cont.toString();
+          }
         }
       }
-     
     }
+
+    board.forEach(print);
   }
-
-  board.forEach(print);
-}
-
-
 
   void resetGame() {
     board = [
