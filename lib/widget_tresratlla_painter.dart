@@ -16,7 +16,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
       ..strokeWidth = 5.0;
 
     // Definim els punts on es creuaran les línies verticals
-    final double firstVertical = size.width / 9;
+    final double firstVertical = size.width / appData.;
     final double secondVertical = 2 * size.width / 9;
 
     // Dibuixem les línies verticals

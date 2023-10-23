@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class AppData with ChangeNotifier {
   // App status
 
-  String numMines = "5x5";
+  String numMines = "5";
   String sizeBoard = "9x9";
   Random rand = Random();
 
@@ -22,12 +22,12 @@ void startGame(){
   board = [];
 
   //Instanciamos la matriz
-  int numM = int.parse(numMines[0]);
+  int numM = int.parse(numMines);
   int sizeB = int.parse(sizeBoard[0]);
   for(int i=0; i<sizeB; ++i){
     List<String> row = [];
     for(int j=0; j<sizeB; ++j){
-      row.add("");
+      row.add(" ");
     }
     board.add(row);
   }
@@ -37,9 +37,9 @@ void startGame(){
     while(true){
       int posX = rand.nextInt(sizeB);
       int posY = rand.nextInt(sizeB);
-      if(board[posY][posX] != "."){
+      if(board[posY][posX] != "B"){
         //print("PosX: " + posX.toString() + " " + "PosY: " + posY.toString());
-        board[posY][posX] = ".";
+        board[posY][posX] = "B";
         break;
       }
     }
@@ -49,49 +49,52 @@ void startGame(){
   for(int i=0; i<sizeB; ++i){
     for(int j=0; j<sizeB; ++j){
       int cont = 0;
-      if(i+1 < sizeB && j-1 > -1){// TOP-L
-        if(board[i+1][j-1]=="."){
-          ++cont;
+      if(board[i][j] == " "){
+         if(i+1 < sizeB && j-1 > -1){// TOP-L
+          if(board[i+1][j-1]=="B"){
+            ++cont;
+          }
+        }
+        if(i+1 < sizeB){// TOP-C
+          if(board[i+1][j]=="B"){
+            ++cont;
+          }
+        }
+        if(i+1 < sizeB && j+1 < sizeB){// TOP-R
+          if(board[i+1][j+1]=="B"){
+            ++cont;
+          }
+        }
+        if(j-1 > -1){// CENTER-L
+          if(board[i][j-1]=="B"){
+            ++cont;
+          }
+        }
+        if(j+1 > sizeB){// CENTER-R
+          if(board[i][j+1]=="B"){
+            ++cont;
+          }
+        } 
+        if(i-1 < -1 && j-1 > -1){// BOT-L
+          if(board[i-1][j-1]=="B"){
+            ++cont;
+          }
+        }
+        if(i-1 < -1){// BOT-C
+          if(board[i-1][j]=="B"){
+            ++cont;
+          }
+        }
+        if(i-1 < -1 && j+1 > sizeB){// BOT-R
+          if(board[i-1][j+1]=="B"){
+            ++cont;
+          }
+        }
+        if(cont!=0){
+          board[i][j] = cont.toString();
         }
       }
-      if(i+1 < sizeB){// TOP-C
-        if(board[i+1][j]=="."){
-          ++cont;
-        }
-      }
-      if(i+1 < sizeB && j+1 < sizeB){// TOP-R
-        if(board[i+1][j+1]=="."){
-          ++cont;
-        }
-      }
-      if(j-1 > -1){// CENTER-L
-        if(board[i][j-1]=="."){
-          ++cont;
-        }
-      }
-      if(j+1 > sizeB){// CENTER-R
-        if(board[i][j+1]=="."){
-          ++cont;
-        }
-      } 
-      if(i-1 < -1 && j-1 > -1){// BOT-L
-        if(board[i-1][j-1]=="."){
-          ++cont;
-        }
-      }
-      if(i-1 < -1){// BOT-C
-        if(board[i-1][j]=="."){
-          ++cont;
-        }
-      }
-      if(i-1 < -1 && j+1 > sizeB){// BOT-R
-        if(board[i-1][j+1]=="."){
-          ++cont;
-        }
-      }
-      if(cont!=0){
-        board[i][j] = cont;
-      }
+     
     }
   }
 
