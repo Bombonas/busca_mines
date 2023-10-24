@@ -50,7 +50,7 @@ class AppData with ChangeNotifier {
       for (int j = 0; j < sizeB; ++j) {
         int cont = 0;
         if (board[i][j] == " ") {
-          if (i + 1 < sizeB && j - 1 > -1) {
+          if (i + 1 < sizeB && j - 1 >= 0) {
             // TOP-L
             if (board[i + 1][j - 1] == "B") {
               ++cont;
@@ -68,31 +68,31 @@ class AppData with ChangeNotifier {
               ++cont;
             }
           }
-          if (j - 1 > -1) {
+          if (j - 1 >= 0) {
             // CENTER-L
             if (board[i][j - 1] == "B") {
               ++cont;
             }
           }
-          if (j + 1 > sizeB) {
+          if (j + 1 < sizeB) {
             // CENTER-R
             if (board[i][j + 1] == "B") {
               ++cont;
             }
           }
-          if (i - 1 < -1 && j - 1 > -1) {
+          if (i - 1 >= 0 && j - 1 >= 0) {
             // BOT-L
             if (board[i - 1][j - 1] == "B") {
               ++cont;
             }
           }
-          if (i - 1 < -1) {
+          if (i - 1 >= 0) {
             // BOT-C
             if (board[i - 1][j] == "B") {
               ++cont;
             }
           }
-          if (i - 1 < -1 && j + 1 > sizeB) {
+          if (i - 1 >= 0 && j + 1 < sizeB) {
             // BOT-R
             if (board[i - 1][j + 1] == "B") {
               ++cont;
@@ -106,6 +106,36 @@ class AppData with ChangeNotifier {
     }
 
     board.forEach(print);
+    print("===============================");
+    showCells(0, 0);
+    board.forEach(print);
+  }
+
+  void showCells(int i, int j){
+    int sizeB = int.parse(sizeBoard[0]);
+    // B: bomb, C: checked(empty cell), F: flag(wrong positioned), N: nice flag(nice positioned), i and j in matrix range
+    if(i >= 0 && j >= 0 && i<sizeB && j<sizeB && board[i][j] != "B" && board[i][j] != "C" && board[i][j] != "F" && board[i][j] != "N"){
+
+      // No es una bomba ni una casilla ya vista ni una bandera
+      if(board[i][j] == " "){
+        // Es una casilla hueca sin descubrir
+
+        board[i][j] = "C";
+        showCells(i + 1, j - 1);  // TOP-L
+        showCells(i + 1, j);      // TOP-C
+        showCells(i + 1, j + 1);  // TOP-R
+        showCells(i, j - 1);      // CENTER-L
+        showCells(i, j + 1);      // CENTER-R
+        showCells(i - 1, j - 1);  // BOT-L
+        showCells(i - 1, j);      // BOT-C
+        showCells(i - 1, j + 1);  // BOT-R
+      }else{
+        // Es un numero
+        if(board[i][j].length == 1){
+          board[i][j] += "C";
+        }
+      }
+    }
   }
 
   void resetGame() {
