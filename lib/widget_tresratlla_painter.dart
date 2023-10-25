@@ -62,6 +62,34 @@ class WidgetTresRatllaPainter extends CustomPainter {
     canvas.drawImageRect(image, srcRect, dstRect, Paint());
   }
 
+  void drawSquare(Canvas canvas, double x0, double y0, double x1, double y1){
+    final paint = Paint()
+      ..color = const ui.Color.fromARGB(255, 202, 202, 202)
+      ..style = PaintingStyle.fill;
+    final rect = Rect.fromPoints(Offset(x0, y0), Offset(x1, y1));
+    canvas.drawRect(rect, paint);
+  }
+
+//ToDo: La funcion que dibuja los numeros
+  void drawNumber(Canvas canvas, double x0, double y0, double x1, double y1, int number){
+    final paint = Paint()
+      ..color = const ui.Color.fromARGB(255, 202, 202, 202)
+      ..style = PaintingStyle.fill;
+    final rect = Rect.fromPoints(Offset(x0, y0), Offset(x1, y1));
+    canvas.drawRect(rect, paint);
+    Color color = Colors.black;
+    switch(number){
+      case 1:
+        color = const ui.Color.fromARGB(255, 0, 14, 211);
+        break;
+    }
+    const textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 24.0,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
   // Dibuia una creu centrada a una casella del taulell
   void drawCross(Canvas canvas, double x0, double y0, double x1, double y1,
       Color color, double strokeWidth) {
@@ -91,6 +119,8 @@ class WidgetTresRatllaPainter extends CustomPainter {
     canvas.drawCircle(Offset(x, y), radius, paint);
   }
 
+  
+
   // Dibuixa el taulell de joc (creus i rodones)
   void drawBoardStatus(Canvas canvas, Size size) {
     // Dibuixar 'X' i 'O' del tauler
@@ -99,17 +129,17 @@ class WidgetTresRatllaPainter extends CustomPainter {
 
     for (int i = 0; i < colrow; i++) {
       for (int j = 0; j < colrow; j++) {
-        if (appData.board[i][j] == 'X') {
-          // Dibuixar una X amb el color del jugador
-          Color color = Colors.blue;
+        if (appData.board[i][j] == 'C') {
+          // Dibujamos los cuadros vacios
 
-          double x0 = j * cellWidth;
-          double y0 = i * cellHeight;
-          double x1 = (j + 1) * cellWidth;
-          double y1 = (i + 1) * cellHeight;
+          double x0 = j * cellWidth+2.5;
+          double y0 = i * cellHeight+2.5;
+          double x1 = (j + 1) * cellWidth-2.5;
+          double y1 = (i + 1) * cellHeight-2.5;
 
-          drawImage(canvas, appData.imagePlayer!, x0, y0, x1, y1);
-          drawCross(canvas, x0, y0, x1, y1, color, 5.0);
+          drawSquare(canvas, x0, y0, x1, y1);
+          //drawImage(canvas, appData.imagePlayer!, x0, y0, x1, y1);
+          //drawCross(canvas, x0, y0, x1, y1, color, 5.0);
         } else  {// if (appData.board[i][j] == 'O')
           // Dibuixar una O amb el color de l'oponent
           Color color = Colors.blue;
