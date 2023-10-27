@@ -130,13 +130,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
       ..strokeWidth = 5.0;
 
     canvas.drawLine(Offset(x0, y0), Offset(x1, y1), paint);
-    var path = Path();
-    path.moveTo(size.width / 2, 0);
-    path.lineTo(0, size.height);
-    path.lineTo(size.height, size.width);
-    path.close();
-    canvas.drawPath(path, Paint()..color = Colors.green);
-  }
+    
 
   }
 
