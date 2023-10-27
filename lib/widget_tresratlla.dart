@@ -26,56 +26,49 @@ class WidgetTresRatllaState extends State<WidgetTresRatlla> {
   @override
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
+    if (appData.sizeBoard == "9x9") {
+      appData.sBoard = 9;
+    } else {
+      appData.sBoard = 15;
+    }
 
-    return GestureDetector(
-      onTapUp: (TapUpDetails details) {
-        final int row =
-            (details.localPosition.dy / (context.size!.height / 3)).floor();
-        final int col =
-            (details.localPosition.dx / (context.size!.width / 3)).floor();
+    return SizedBox(
+      width:
+          MediaQuery.of(context).size.width, // Ocupa tot l'ample de la pantalla
+      height: MediaQuery.of(context).size.height -
+          56.0, // Ocupa tota l'altura disponible menys l'altura de l'AppBar
+      child: FutureBuilder(
+        // Segons si les imatges estan disponibles mostra un progrés o el joc
+        future: _loadImagesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const CupertinoActivityIndicator();
+          } else {
+            return GestureDetector(
+              onTapUp: (TapUpDetails details) {
+                final int row = (details.localPosition.dy /
+                        (context.size!.height / appData.sBoard))
+                    .floor();
+                final int col = (details.localPosition.dx /
+                        (context.size!.width / appData.sBoard))
+                    .floor();
 
-        appData.playMove(row, col);
-        setState(() {}); // Actualitza la vista
-      },
-      child: SizedBox(
-        width: MediaQuery.of(context)
-            .size
-            .width, // Ocupa tot l'ample de la pantalla
-        height: MediaQuery.of(context).size.height -
-            56.0, // Ocupa tota l'altura disponible menys l'altura de l'AppBar
-        child: FutureBuilder(
-          // Segons si les imatges estan disponibles mostra un progrés o el joc
-          future: _loadImagesFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const CupertinoActivityIndicator();
-            } else {
-              return GestureDetector(
-                onTapUp: (TapUpDetails details) {
-                  final int row =
-                      (details.localPosition.dy / (context.size!.height / 3))
-                          .floor();
-                  final int col =
-                      (details.localPosition.dx / (context.size!.width / 3))
-                          .floor();
-
-                  appData.playMove(row, col);
-                  setState(() {}); // Actualitza la vista
-                },
-                child: SizedBox(
-                  width: MediaQuery.of(context)
-                      .size
-                      .width, // Ocupa tot l'ample de la pantalla
-                  height: MediaQuery.of(context).size.height -
-                      56.0, // Ocupa tota l'altura disponible menys l'altura de l'AppBar
-                  child: CustomPaint(
-                    painter: WidgetTresRatllaPainter(appData),
-                  ),
+                appData.playMove(row, col);
+                setState(() {}); // Actualitza la vista
+              },
+              child: SizedBox(
+                width: MediaQuery.of(context)
+                    .size
+                    .width, // Ocupa tot l'ample de la pantalla
+                height: MediaQuery.of(context).size.height -
+                    56.0, // Ocupa tota l'altura disponible menys l'altura de l'AppBar
+                child: CustomPaint(
+                  painter: WidgetTresRatllaPainter(appData),
                 ),
-              );
-            }
-          },
-        ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

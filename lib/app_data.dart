@@ -9,6 +9,7 @@ class AppData with ChangeNotifier {
   String numMines = "5";
   String sizeBoard = "9x9";
   Random rand = Random();
+  int sBoard = 9;
 
   List<List<String>> board = [];
   bool gameIsOver = false;
@@ -111,27 +112,33 @@ class AppData with ChangeNotifier {
     board.forEach(print);
   }
 
-  void showCells(int i, int j){
+  void showCells(int i, int j) {
     int sizeB = int.parse(sizeBoard[0]);
     // B: bomb, C: checked(empty cell), F: flag(wrong positioned), N: nice flag(nice positioned), i and j in matrix range
-    if(i >= 0 && j >= 0 && i<sizeB && j<sizeB && board[i][j] != "B" && board[i][j] != "C" && board[i][j] != "F" && board[i][j] != "N"){
-
+    if (i >= 0 &&
+        j >= 0 &&
+        i < sizeB &&
+        j < sizeB &&
+        board[i][j] != "B" &&
+        board[i][j] != "C" &&
+        board[i][j] != "F" &&
+        board[i][j] != "N") {
       // No es una bomba ni una casilla ya vista ni una bandera
-      if(board[i][j] == " "){
+      if (board[i][j] == " ") {
         // Es una casilla hueca sin descubrir
 
         board[i][j] = "C";
-        showCells(i + 1, j - 1);  // TOP-L
-        showCells(i + 1, j);      // TOP-C
-        showCells(i + 1, j + 1);  // TOP-R
-        showCells(i, j - 1);      // CENTER-L
-        showCells(i, j + 1);      // CENTER-R
-        showCells(i - 1, j - 1);  // BOT-L
-        showCells(i - 1, j);      // BOT-C
-        showCells(i - 1, j + 1);  // BOT-R
-      }else{
+        showCells(i + 1, j - 1); // TOP-L
+        showCells(i + 1, j); // TOP-C
+        showCells(i + 1, j + 1); // TOP-R
+        showCells(i, j - 1); // CENTER-L
+        showCells(i, j + 1); // CENTER-R
+        showCells(i - 1, j - 1); // BOT-L
+        showCells(i - 1, j); // BOT-C
+        showCells(i - 1, j + 1); // BOT-R
+      } else {
         // Es un numero
-        if(board[i][j].length == 1){
+        if (board[i][j].length == 1) {
           board[i][j] += "C";
         }
       }
@@ -154,31 +161,7 @@ class AppData with ChangeNotifier {
     if (board[row][col] == '-') {
       board[row][col] = 'X';
       checkGameWinner();
-      if (gameWinner == '-') {
-        machinePlay();
-      }
     }
-  }
-
-  
-
-  // Fa una jugada de la màquina, només busca la primera posició lliure
-  void machinePlay() {
-    bool moveMade = false;
-
-    // Buscar una casella lliure '-'
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (board[i][j] == '-') {
-          board[i][j] = 'O';
-          moveMade = true;
-          break;
-        }
-      }
-      if (moveMade) break;
-    }
-
-    checkGameWinner();
   }
 
   // Comprova si el joc ja té un tres en ratlla
