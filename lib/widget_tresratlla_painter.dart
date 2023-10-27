@@ -123,17 +123,6 @@ class WidgetTresRatllaPainter extends CustomPainter {
     textPainter.paint(canvas, Offset(x2, y2));
   }
 
-  void drawFlag(Canvas canvas, double x0, double y0, double x1, double y1){
-
-    Paint paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 5.0;
-
-    canvas.drawLine(Offset(x0, y0), Offset(x1, y1), paint);
-    
-
-  }
-
   // Dibuia una creu centrada a una casella del taulell
   void drawCross(Canvas canvas, double x0, double y0, double x1, double y1,
       Color color, double strokeWidth) {
@@ -163,6 +152,13 @@ class WidgetTresRatllaPainter extends CustomPainter {
     canvas.drawCircle(Offset(x, y), radius, paint);
   }
 
+  void drawFilledCircle(Canvas canvas, double x, double y, double radius){
+    final paint = Paint()
+      ..color = const ui.Color.fromARGB(255, 0, 0, 0) // Color del círculo
+      ..style = PaintingStyle.fill; // Estilo de relleno
+
+    canvas.drawCircle(Offset(x , y), radius, paint);
+  }
   
 
   // Dibuixa el taulell de joc (creus i rodones)
@@ -191,7 +187,23 @@ class WidgetTresRatllaPainter extends CustomPainter {
 
           drawNumber(canvas, x0, y0, x1, y1, x2, y2, int.parse(appData.board[i][j][0]), cellWidth);
         }
-        else  {// if (appData.board[i][j] == 'O')
+        else  if(appData.board[i][j] == "F" || appData.board[i][j] == "N"){
+          Color color = ui.Color.fromARGB(255, 72, 0, 90);
+
+          double x0 = j * cellWidth;
+          double y0 = i * cellHeight;
+          double x1 = (j + 1) * cellWidth;
+          double y1 = (i + 1) * cellHeight;
+          double cX = x0 + (x1 - x0) / 2;
+          double cY = y0 + (y1 - y0) / 2;
+          double radius = (min(cellWidth, cellHeight) / 4) - 5;
+
+          drawCircle(canvas, cX, cY, radius, color, 5.0);
+        }
+
+        if(appData.gameIsOver && !appData.gameWinner && appData.board[i][j] == "B"){
+          Color color = ui.Color.fromARGB(255, 72, 0, 90);
+
           double x0 = j * cellWidth;
           double y0 = i * cellHeight;
           double x1 = (j + 1) * cellWidth;
@@ -200,8 +212,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
           double cY = y0 + (y1 - y0) / 2;
           double radius = (min(cellWidth, cellHeight) / 2) - 5;
 
-          
-
+          drawFilledCircle(canvas, cX, cY, radius);
         }
       }
     }
