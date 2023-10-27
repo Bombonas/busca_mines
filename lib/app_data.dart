@@ -13,13 +13,14 @@ class AppData with ChangeNotifier {
 
   List<List<String>> board = [];
   bool gameIsOver = false;
-  String gameWinner = '-';
+  bool gameWinner = false;
 
   ui.Image? imagePlayer;
   ui.Image? imageOpponent;
   bool imagesReady = false;
 
   void startGame() {
+    gameIsOver = false;
     board = [];
 
     //Instanciamos la matriz
@@ -107,9 +108,6 @@ class AppData with ChangeNotifier {
     }
 
     board.forEach(print);
-    print("===============================");
-    showCells(0, 0);
-    board.forEach(print);
   }
 
   void showCells(int i, int j) {
@@ -126,7 +124,6 @@ class AppData with ChangeNotifier {
       // No es una bomba ni una casilla ya vista ni una bandera
       if (board[i][j] == " ") {
         // Es una casilla hueca sin descubrir
-
         board[i][j] = "C";
         showCells(i + 1, j - 1); // TOP-L
         showCells(i + 1, j); // TOP-C
@@ -145,69 +142,61 @@ class AppData with ChangeNotifier {
     }
   }
 
-  void resetGame() {
-    board = [
-      ['-', '-', '-'],
-      ['-', '-', '-'],
-      ['-', '-', '-'],
-    ];
-    gameIsOver = false;
-    gameWinner = '-';
-  }
-
   // Fa una jugada, primer el jugador després la maquina
   void playMove(int row, int col) {
-    startGame();
-    if (board[row][col] == '-') {
-      board[row][col] = 'X';
-      checkGameWinner();
+    if(board[row][col] == "B"){
+      gameIsOver = true;
+      gameWinner = false;
+    }else{
+      showCells(row, col);
     }
+    
   }
 
   // Comprova si el joc ja té un tres en ratlla
   // No comprova la situació d'empat
-  void checkGameWinner() {
-    for (int i = 0; i < 3; i++) {
-      // Comprovar files
-      if (board[i][0] == board[i][1] &&
-          board[i][1] == board[i][2] &&
-          board[i][0] != '-') {
-        gameIsOver = true;
-        gameWinner = board[i][0];
-        return;
-      }
+  // void checkGameWinner() {
+  //   for (int i = 0; i < 3; i++) {
+  //     // Comprovar files
+  //     if (board[i][0] == board[i][1] &&
+  //         board[i][1] == board[i][2] &&
+  //         board[i][0] != '-') {
+  //       gameIsOver = true;
+  //       gameWinner = board[i][0];
+  //       return;
+  //     }
 
-      // Comprovar columnes
-      if (board[0][i] == board[1][i] &&
-          board[1][i] == board[2][i] &&
-          board[0][i] != '-') {
-        gameIsOver = true;
-        gameWinner = board[0][i];
-        return;
-      }
-    }
+  //     // Comprovar columnes
+  //     if (board[0][i] == board[1][i] &&
+  //         board[1][i] == board[2][i] &&
+  //         board[0][i] != '-') {
+  //       gameIsOver = true;
+  //       gameWinner = board[0][i];
+  //       return;
+  //     }
+  //   }
 
-    // Comprovar diagonal principal
-    if (board[0][0] == board[1][1] &&
-        board[1][1] == board[2][2] &&
-        board[0][0] != '-') {
-      gameIsOver = true;
-      gameWinner = board[0][0];
-      return;
-    }
+  //   // Comprovar diagonal principal
+  //   if (board[0][0] == board[1][1] &&
+  //       board[1][1] == board[2][2] &&
+  //       board[0][0] != '-') {
+  //     gameIsOver = true;
+  //     gameWinner = board[0][0];
+  //     return;
+  //   }
 
-    // Comprovar diagonal secundària
-    if (board[0][2] == board[1][1] &&
-        board[1][1] == board[2][0] &&
-        board[0][2] != '-') {
-      gameIsOver = true;
-      gameWinner = board[0][2];
-      return;
-    }
+  //   // Comprovar diagonal secundària
+  //   if (board[0][2] == board[1][1] &&
+  //       board[1][1] == board[2][0] &&
+  //       board[0][2] != '-') {
+  //     gameIsOver = true;
+  //     gameWinner = board[0][2];
+  //     return;
+  //   }
 
-    // No hi ha guanyador, torna '-'
-    gameWinner = '-';
-  }
+  //   // No hi ha guanyador, torna '-'
+  //   gameWinner = '-';
+  // }
 
   // Carrega les imatges per dibuixar-les al Canvas
   Future<void> loadImages(BuildContext context) async {

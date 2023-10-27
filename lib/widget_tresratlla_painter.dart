@@ -71,7 +71,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
   }
 
 //ToDo: La funcion que dibuja los numeros
-  void drawNumber(Canvas canvas, double x0, double y0, double x1, double y1, int number){
+  void drawNumber(Canvas canvas, double x0, double y0, double x1, double y1, double x2, double y2, int number, double cellWidth){
     final paint = Paint()
       ..color = const ui.Color.fromARGB(255, 202, 202, 202)
       ..style = PaintingStyle.fill;
@@ -80,14 +80,64 @@ class WidgetTresRatllaPainter extends CustomPainter {
     Color color = Colors.black;
     switch(number){
       case 1:
+        color = ui.Color.fromARGB(255, 0, 183, 255);
+        break;
+      case 2:
+        color = ui.Color.fromARGB(255, 9, 107, 0);
+        break;
+      case 3:
+        color = ui.Color.fromARGB(255, 236, 0, 0);
+        break;
+      case 4:
         color = const ui.Color.fromARGB(255, 0, 14, 211);
         break;
+      case 5:
+        color = ui.Color.fromARGB(255, 126, 19, 0);
+        break;
+      case 6:
+        color = ui.Color.fromARGB(255, 6, 187, 142);
+        break;
+      case 7:
+        color = ui.Color.fromARGB(255, 0, 0, 0);
+        break;
+      case 8:
+        color = ui.Color.fromARGB(255, 85, 85, 85);
+        break;
     }
-    const textStyle = TextStyle(
-      color: Colors.black,
-      fontSize: 24.0,
+
+    final textStyle = TextStyle(
+      color: color,
+      fontSize: 64.0,
       fontWeight: FontWeight.bold,
     );
+
+    final textPainter = TextPainter(
+      text: TextSpan(text: number.toString(), style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(
+      maxWidth: cellWidth,
+    );
+
+    textPainter.paint(canvas, Offset(x2, y2));
+  }
+
+  void drawFlag(Canvas canvas, double x0, double y0, double x1, double y1){
+
+    Paint paint = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 5.0;
+
+    canvas.drawLine(Offset(x0, y0), Offset(x1, y1), paint);
+    var path = Path();
+    path.moveTo(size.width / 2, 0);
+    path.lineTo(0, size.height);
+    path.lineTo(size.height, size.width);
+    path.close();
+    canvas.drawPath(path, Paint()..color = Colors.green);
+  }
+
   }
 
   // Dibuia una creu centrada a una casella del taulell
@@ -131,19 +181,23 @@ class WidgetTresRatllaPainter extends CustomPainter {
       for (int j = 0; j < colrow; j++) {
         if (appData.board[i][j] == 'C') {
           // Dibujamos los cuadros vacios
-
           double x0 = j * cellWidth+2.5;
           double y0 = i * cellHeight+2.5;
           double x1 = (j + 1) * cellWidth-2.5;
           double y1 = (i + 1) * cellHeight-2.5;
 
           drawSquare(canvas, x0, y0, x1, y1);
-          //drawImage(canvas, appData.imagePlayer!, x0, y0, x1, y1);
-          //drawCross(canvas, x0, y0, x1, y1, color, 5.0);
-        } else  {// if (appData.board[i][j] == 'O')
-          // Dibuixar una O amb el color de l'oponent
-          Color color = Colors.blue;
+        } else if(appData.board[i][j].length > 1){
+          double x0 = j * cellWidth+2.5;
+          double y0 = i * cellHeight+2.5;
+          double x1 = (j + 1) * cellWidth-2.5;
+          double y1 = (i + 1) * cellHeight-2.5;
+          double x2 = j * cellWidth + cellWidth*0.40;
+          double y2 = i * cellHeight;
 
+          drawNumber(canvas, x0, y0, x1, y1, x2, y2, int.parse(appData.board[i][j][0]), cellWidth);
+        }
+        else  {// if (appData.board[i][j] == 'O')
           double x0 = j * cellWidth;
           double y0 = i * cellHeight;
           double x1 = (j + 1) * cellWidth;
@@ -152,8 +206,8 @@ class WidgetTresRatllaPainter extends CustomPainter {
           double cY = y0 + (y1 - y0) / 2;
           double radius = (min(cellWidth, cellHeight) / 2) - 5;
 
-          drawImage(canvas, appData.imageOpponent!, x0, y0, x1, y1);
-          drawCircle(canvas, cX, cY, radius, color, 5.0);
+          
+
         }
       }
     }
@@ -161,7 +215,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
 
   // Dibuixa el missatge de joc acabat
   void drawGameOver(Canvas canvas, Size size) {
-    String message = "El joc ha acabat. Ha guanyat ${appData.gameWinner}!";
+    String message = "Has perdut :(";
 
     const textStyle = TextStyle(
       color: Colors.black,
@@ -201,7 +255,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     drawBoardLines(canvas, size);
     drawBoardStatus(canvas, size);
-    if (appData.gameWinner != '-') {
+    if (!appData.gameWinner && appData.gameIsOver) {
       drawGameOver(canvas, size);
     }
   }
