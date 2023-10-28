@@ -16,7 +16,7 @@ class LayoutIntroState extends State<LayoutIntro> {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text("Tres en ratlla"),
+        middle: const Text("Busca Mines"),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: const Icon(CupertinoIcons.gear_alt, size: 25.0),
