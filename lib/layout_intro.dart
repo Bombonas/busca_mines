@@ -16,7 +16,7 @@ class LayoutIntroState extends State<LayoutIntro> {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text("Tres en ratlla"),
+        middle: const Text("Busca Mines"),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: const Icon(CupertinoIcons.gear_alt, size: 25.0),
@@ -39,7 +39,7 @@ class LayoutIntroState extends State<LayoutIntro> {
             padding: const EdgeInsets.all(20),
             child: CupertinoButton.filled(
               onPressed: () {
-                appData.resetGame();
+                appData.startGame();
                 Navigator.of(context).pushNamed('play');
               },
               child: const Text('Començar el joc'),
