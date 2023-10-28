@@ -56,6 +56,17 @@ class WidgetTresRatllaState extends State<WidgetTresRatlla> {
                 appData.playMove(row, col);
                 setState(() {}); // Actualitza la vista
               },
+              onDoubleTapDown: (TapDownDetails details) {
+                final int row = (details.localPosition.dy /
+                        (context.size!.height / appData.sBoard))
+                    .floor();
+                final int col = (details.localPosition.dx /
+                        (context.size!.width / appData.sBoard))
+                    .floor();
+
+                appData.setFlag(row, col);
+                setState(() {}); // Actualitza la vista
+              },
               child: SizedBox(
                 width: MediaQuery.of(context)
                     .size

@@ -177,17 +177,18 @@ class WidgetTresRatllaPainter extends CustomPainter {
           double y1 = (i + 1) * cellHeight-2.5;
 
           drawSquare(canvas, x0, y0, x1, y1);
-        } else if(appData.board[i][j].length > 1){
+        } else if(appData.board[i][j].length > 1 && appData.board[i][j][1] == "C"){
           double x0 = j * cellWidth+2.5;
           double y0 = i * cellHeight+2.5;
           double x1 = (j + 1) * cellWidth-2.5;
           double y1 = (i + 1) * cellHeight-2.5;
+          
           double x2 = j * cellWidth + cellWidth*0.40;
-          double y2 = i * cellHeight;
+          double y2 = i * cellHeight - cellHeight*0.2;
 
           drawNumber(canvas, x0, y0, x1, y1, x2, y2, int.parse(appData.board[i][j][0]), cellWidth);
         }
-        else  if(appData.board[i][j] == "F" || appData.board[i][j] == "N"){
+        else  if(appData.board[i][j] == "F" || appData.board[i][j] == "N" || (appData.board[i][j].length > 1 && appData.board[i][j][1] == "F")){
           Color color = ui.Color.fromARGB(255, 72, 0, 90);
 
           double x0 = j * cellWidth;
@@ -254,6 +255,42 @@ class WidgetTresRatllaPainter extends CustomPainter {
     // Ara, dibuixar el text
     textPainter.paint(canvas, position);
   }
+  
+  void drawWinGame(Canvas canvas, Size size) {
+    String message = "Has guanyat :D";
+
+    const textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 24.0,
+      fontWeight: FontWeight.bold,
+    );
+
+    final textPainter = TextPainter(
+      text: TextSpan(text: message, style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout(
+      maxWidth: size.width,
+    );
+
+    // Centrem el text en el canvas
+    final position = Offset(
+      (size.width - textPainter.width) / 2,
+      (size.height - textPainter.height) / 2,
+    );
+
+    // Dibuixar un rectangle semi-transparent que ocupi tot l'espai del canvas
+    final bgRect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.7) // Ajusta l'opacitat com vulguis
+      ..style = PaintingStyle.fill;
+
+    canvas.drawRect(bgRect, paint);
+
+    // Ara, dibuixar el text
+    textPainter.paint(canvas, position);
+  }
 
   // Funció principal de dibuix
   @override
@@ -262,6 +299,9 @@ class WidgetTresRatllaPainter extends CustomPainter {
     drawBoardStatus(canvas, size);
     if (!appData.gameWinner && appData.gameIsOver) {
       drawGameOver(canvas, size);
+    }
+    else if(appData.gameWinner && appData.gameIsOver){
+      drawWinGame(canvas, size);
     }
   }
 

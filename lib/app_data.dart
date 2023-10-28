@@ -142,6 +142,32 @@ class AppData with ChangeNotifier {
     }
   }
 
+  void setFlag(int row, int col){
+    if(board[row][col] == "B"){
+      board[row][col] = "N";
+    }
+    else if(board[row][col] == " "){
+      board[row][col] = "F";
+    }
+    else if(["1", "2", "3", "4", "5", "6", "7", "8"].contains(board[row][col])){
+      board[row][col] += "F";
+    }
+    else if(board[row][col] == "N"){
+      board[row][col] = "B";
+    }
+    else if(board[row][col] == "F"){
+      board[row][col] = " ";
+    }
+    else if(board[row][col].length > 1 && board[row][col][1] == "F"){
+      board[row][col] = board[row][col][0];
+    }
+
+    if(nicePlacedFlags() == int.parse(numMines)){
+      gameIsOver = true;
+      gameWinner = true;
+    }
+  }
+
   // Fa una jugada, primer el jugador després la maquina
   void playMove(int row, int col) {
     if(board[row][col] == "B"){
@@ -151,6 +177,17 @@ class AppData with ChangeNotifier {
       showCells(row, col);
     }
     
+  }
+
+  int nicePlacedFlags(){
+    int sizeB = int.parse(sizeBoard[0]);
+    int cont = 0;
+    for (int i = 0; i < sizeB; ++i) {
+      for (int j = 0; j < sizeB; ++j) {
+        if(board[i][j] == "N") cont++;
+      }
+    }
+    return cont;
   }
 
   // Comprova si el joc ja té un tres en ratlla
