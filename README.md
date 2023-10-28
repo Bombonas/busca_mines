@@ -1,6 +1,14 @@
-# tres_en_ratlla
+# Buscamines
+
+Authors: Pablo Mejias, Alejandro León
 
 A new Flutter project.
+
+How to play: 
+
+Press "Començar el joc" if you want to go straight into the game or press the gear icon to go into settings and set the size of the board or the number of bombs.
+
+Ingame it works just as the regular minesweeper, enjoy!
 
 ## Getting Started
 
