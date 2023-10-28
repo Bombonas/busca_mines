@@ -202,7 +202,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
           drawCircle(canvas, cX, cY, radius, color, 5.0);
         }
 
-        if(appData.gameIsOver && !appData.gameWinner && appData.board[i][j] == "B"){
+        if(appData.gameIsOver && !appData.gameWinner && (appData.board[i][j] == "B" || appData.board[i][j] == "N")){
           Color color = ui.Color.fromARGB(255, 72, 0, 90);
 
           double x0 = j * cellWidth;
@@ -300,7 +300,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
     if (!appData.gameWinner && appData.gameIsOver) {
       drawGameOver(canvas, size);
     }
-    else if(appData.gameWinner && appData.gameIsOver){
+    else if(appData.gameWinner && appData.gameIsOver && appData.numFlags == int.parse(appData.numMines)){
       drawWinGame(canvas, size);
     }
   }

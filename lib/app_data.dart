@@ -24,6 +24,7 @@ class AppData with ChangeNotifier {
 
   void startGame() {
     startTimer();
+    seconds = 0;
     numFlags = 0;
     gameIsOver = false;
     board = [];
@@ -150,8 +151,13 @@ class AppData with ChangeNotifier {
   void startTimer(){
     const oneSecond = const Duration(seconds: 1);
     timer = Timer.periodic(oneSecond, (Timer timer) {
+      if(!gameIsOver){
         seconds++;
         notifyListeners();
+      }else{
+        timer.cancel();
+      }
+       
     });
   }
 
