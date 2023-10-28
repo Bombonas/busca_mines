@@ -188,18 +188,13 @@ class WidgetTresRatllaPainter extends CustomPainter {
 
           drawNumber(canvas, x0, y0, x1, y1, x2, y2,
               int.parse(appData.board[i][j][0]), cellWidth);
-        } else if (appData.board[i][j] == "F" ||
-            appData.board[i][j] == "N" ||
-            (appData.board[i][j].length > 1 && appData.board[i][j][1] == "F")) {
-          Color color = ui.Color.fromARGB(255, 72, 0, 90);
+        } else if (!appData.gameIsOver && (appData.board[i][j] == "F" || appData.board[i][j] == "N" || appData.board[i][j].length > 1 && appData.board[i][j][1] == "F")) {
 
           double x0 = j * cellWidth;
           double y0 = i * cellHeight;
           double x1 = (j + 1) * cellWidth;
           double y1 = (i + 1) * cellHeight;
-          double cX = x0 + (x1 - x0) / 2;
-          double cY = y0 + (y1 - y0) / 2;
-          double radius = (min(cellWidth, cellHeight) / 4) - 5;
+
           drawImage(canvas, appData.imageFlag!, x0, y0, x1, y1);
         }
 
