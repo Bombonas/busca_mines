@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 
 class AppData with ChangeNotifier {
   // App status
-
+  
+  late Timer timer;
+  int seconds = 0;
   String numMines = "5";
+  int  numFlags = 0;
   String sizeBoard = "9x9";
   Random rand = Random();
   int sBoard = 9;
@@ -20,6 +23,8 @@ class AppData with ChangeNotifier {
   bool imagesReady = false;
 
   void startGame() {
+    startTimer();
+    numFlags = 0;
     gameIsOver = false;
     board = [];
 
@@ -142,25 +147,40 @@ class AppData with ChangeNotifier {
     }
   }
 
+  void startTimer(){
+    const oneSecond = const Duration(seconds: 1);
+    timer = Timer.periodic(oneSecond, (Timer timer) {
+        seconds++;
+        notifyListeners();
+    });
+  }
+
   void setFlag(int row, int col){
     if(board[row][col] == "B"){
+      numFlags++;
       board[row][col] = "N";
     }
     else if(board[row][col] == " "){
+      numFlags++;
       board[row][col] = "F";
     }
     else if(["1", "2", "3", "4", "5", "6", "7", "8"].contains(board[row][col])){
+      numFlags++;
       board[row][col] += "F";
     }
     else if(board[row][col] == "N"){
+      numFlags--;
       board[row][col] = "B";
     }
     else if(board[row][col] == "F"){
+      numFlags--;
       board[row][col] = " ";
     }
     else if(board[row][col].length > 1 && board[row][col][1] == "F"){
+      numFlags--;
       board[row][col] = board[row][col][0];
     }
+    notifyListeners();
 
     if(nicePlacedFlags() == int.parse(numMines)){
       gameIsOver = true;
@@ -168,7 +188,6 @@ class AppData with ChangeNotifier {
     }
   }
 
-  // Fa una jugada, primer el jugador després la maquina
   void playMove(int row, int col) {
     if(board[row][col] == "B"){
       gameIsOver = true;

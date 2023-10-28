@@ -1,4 +1,6 @@
+import 'package:cupertino_base/app_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'widget_tresratlla.dart';
 
 class LayoutPlay extends StatefulWidget {
@@ -11,12 +13,22 @@ class LayoutPlay extends StatefulWidget {
 class LayoutPlayState extends State<LayoutPlay> {
   @override
   Widget build(BuildContext context) {
+    //AppData appData = Provider.of<AppData>(context, listen: true);
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text("Partida"),
+        middle: Consumer<AppData>(
+          builder: (context, appData, child) {
+            return Text("Flags: " + (int.parse(appData.numMines) - appData.numFlags).toString());
+          },
+        ),
         leading: CupertinoNavigationBarBackButton(
           onPressed: () {
             Navigator.of(context).pop();
+          },
+        ),
+        trailing: Consumer<AppData>(
+          builder: (context, appData, child) {
+            return Text("Time: " + appData.seconds.toString());
           },
         ),
       ),
