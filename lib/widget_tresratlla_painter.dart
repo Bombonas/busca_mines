@@ -7,7 +7,6 @@ import 'app_data.dart';
 class WidgetTresRatllaPainter extends CustomPainter {
   final AppData appData;
   int colrow = 0;
-
   WidgetTresRatllaPainter(this.appData);
 
   // Dibuixa les linies del taulell
@@ -62,7 +61,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
     canvas.drawImageRect(image, srcRect, dstRect, Paint());
   }
 
-  void drawSquare(Canvas canvas, double x0, double y0, double x1, double y1){
+  void drawSquare(Canvas canvas, double x0, double y0, double x1, double y1) {
     final paint = Paint()
       ..color = const ui.Color.fromARGB(255, 202, 202, 202)
       ..style = PaintingStyle.fill;
@@ -71,14 +70,15 @@ class WidgetTresRatllaPainter extends CustomPainter {
   }
 
 //ToDo: La funcion que dibuja los numeros
-  void drawNumber(Canvas canvas, double x0, double y0, double x1, double y1, double x2, double y2, int number, double cellWidth){
+  void drawNumber(Canvas canvas, double x0, double y0, double x1, double y1,
+      double x2, double y2, int number, double cellWidth) {
     final paint = Paint()
       ..color = const ui.Color.fromARGB(255, 202, 202, 202)
       ..style = PaintingStyle.fill;
     final rect = Rect.fromPoints(Offset(x0, y0), Offset(x1, y1));
     canvas.drawRect(rect, paint);
     Color color = Colors.black;
-    switch(number){
+    switch (number) {
       case 1:
         color = ui.Color.fromARGB(255, 0, 183, 255);
         break;
@@ -152,14 +152,13 @@ class WidgetTresRatllaPainter extends CustomPainter {
     canvas.drawCircle(Offset(x, y), radius, paint);
   }
 
-  void drawFilledCircle(Canvas canvas, double x, double y, double radius){
+  void drawFilledCircle(Canvas canvas, double x, double y, double radius) {
     final paint = Paint()
       ..color = const ui.Color.fromARGB(255, 0, 0, 0) // Color del círculo
       ..style = PaintingStyle.fill; // Estilo de relleno
 
-    canvas.drawCircle(Offset(x , y), radius, paint);
+    canvas.drawCircle(Offset(x, y), radius, paint);
   }
-  
 
   // Dibuixa el taulell de joc (creus i rodones)
   void drawBoardStatus(Canvas canvas, Size size) {
@@ -171,24 +170,27 @@ class WidgetTresRatllaPainter extends CustomPainter {
       for (int j = 0; j < colrow; j++) {
         if (appData.board[i][j] == 'C') {
           // Dibujamos los cuadros vacios
-          double x0 = j * cellWidth+2.5;
-          double y0 = i * cellHeight+2.5;
-          double x1 = (j + 1) * cellWidth-2.5;
-          double y1 = (i + 1) * cellHeight-2.5;
+          double x0 = j * cellWidth + 2.5;
+          double y0 = i * cellHeight + 2.5;
+          double x1 = (j + 1) * cellWidth - 2.5;
+          double y1 = (i + 1) * cellHeight - 2.5;
 
           drawSquare(canvas, x0, y0, x1, y1);
-        } else if(appData.board[i][j].length > 1 && appData.board[i][j][1] == "C"){
-          double x0 = j * cellWidth+2.5;
-          double y0 = i * cellHeight+2.5;
-          double x1 = (j + 1) * cellWidth-2.5;
-          double y1 = (i + 1) * cellHeight-2.5;
-          
-          double x2 = j * cellWidth + cellWidth*0.40;
-          double y2 = i * cellHeight - cellHeight*0.2;
+        } else if (appData.board[i][j].length > 1 &&
+            appData.board[i][j][1] == "C") {
+          double x0 = j * cellWidth + 2.5;
+          double y0 = i * cellHeight + 2.5;
+          double x1 = (j + 1) * cellWidth - 2.5;
+          double y1 = (i + 1) * cellHeight - 2.5;
 
-          drawNumber(canvas, x0, y0, x1, y1, x2, y2, int.parse(appData.board[i][j][0]), cellWidth);
-        }
-        else  if(appData.board[i][j] == "F" || appData.board[i][j] == "N" || (appData.board[i][j].length > 1 && appData.board[i][j][1] == "F")){
+          double x2 = j * cellWidth + cellWidth * 0.40;
+          double y2 = i * cellHeight - cellHeight * 0.2;
+
+          drawNumber(canvas, x0, y0, x1, y1, x2, y2,
+              int.parse(appData.board[i][j][0]), cellWidth);
+        } else if (appData.board[i][j] == "F" ||
+            appData.board[i][j] == "N" ||
+            (appData.board[i][j].length > 1 && appData.board[i][j][1] == "F")) {
           Color color = ui.Color.fromARGB(255, 72, 0, 90);
 
           double x0 = j * cellWidth;
@@ -198,11 +200,12 @@ class WidgetTresRatllaPainter extends CustomPainter {
           double cX = x0 + (x1 - x0) / 2;
           double cY = y0 + (y1 - y0) / 2;
           double radius = (min(cellWidth, cellHeight) / 4) - 5;
-
-          drawCircle(canvas, cX, cY, radius, color, 5.0);
+          drawImage(canvas, appData.imageFlag!, x0, y0, x1, y1);
         }
 
-        if(appData.gameIsOver && !appData.gameWinner && (appData.board[i][j] == "B" || appData.board[i][j] == "N")){
+        if (appData.gameIsOver &&
+            !appData.gameWinner &&
+            (appData.board[i][j] == "B" || appData.board[i][j] == "N")) {
           Color color = ui.Color.fromARGB(255, 72, 0, 90);
 
           double x0 = j * cellWidth;
@@ -213,7 +216,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
           double cY = y0 + (y1 - y0) / 2;
           double radius = (min(cellWidth, cellHeight) / 2) - 5;
 
-          drawFilledCircle(canvas, cX, cY, radius);
+          drawImage(canvas, appData.imageBomb!, x0, y0, x1, y1);
         }
       }
     }
@@ -255,7 +258,7 @@ class WidgetTresRatllaPainter extends CustomPainter {
     // Ara, dibuixar el text
     textPainter.paint(canvas, position);
   }
-  
+
   void drawWinGame(Canvas canvas, Size size) {
     String message = "Has guanyat :D";
 
@@ -299,8 +302,9 @@ class WidgetTresRatllaPainter extends CustomPainter {
     drawBoardStatus(canvas, size);
     if (!appData.gameWinner && appData.gameIsOver) {
       drawGameOver(canvas, size);
-    }
-    else if(appData.gameWinner && appData.gameIsOver && appData.numFlags == int.parse(appData.numMines)){
+    } else if (appData.gameWinner &&
+        appData.gameIsOver &&
+        appData.numFlags == int.parse(appData.numMines)) {
       drawWinGame(canvas, size);
     }
   }

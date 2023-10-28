@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 
 class AppData with ChangeNotifier {
   // App status
-  
+
   late Timer timer;
   int seconds = 0;
   String numMines = "5";
-  int  numFlags = 0;
+  int numFlags = 0;
   String sizeBoard = "9x9";
   Random rand = Random();
   int sBoard = 9;
@@ -18,8 +18,8 @@ class AppData with ChangeNotifier {
   bool gameIsOver = false;
   bool gameWinner = false;
 
-  ui.Image? imagePlayer;
-  ui.Image? imageOpponent;
+  ui.Image? imageFlag;
+  ui.Image? imageBomb;
   bool imagesReady = false;
 
   void startGame() {
@@ -148,68 +148,62 @@ class AppData with ChangeNotifier {
     }
   }
 
-  void startTimer(){
+  void startTimer() {
     const oneSecond = const Duration(seconds: 1);
     timer = Timer.periodic(oneSecond, (Timer timer) {
-      if(!gameIsOver){
+      if (!gameIsOver) {
         seconds++;
         notifyListeners();
-      }else{
+      } else {
         timer.cancel();
       }
-       
     });
   }
 
-  void setFlag(int row, int col){
-    if(board[row][col] == "B"){
+  void setFlag(int row, int col) {
+    if (board[row][col] == "B") {
       numFlags++;
       board[row][col] = "N";
-    }
-    else if(board[row][col] == " "){
+    } else if (board[row][col] == " ") {
       numFlags++;
       board[row][col] = "F";
-    }
-    else if(["1", "2", "3", "4", "5", "6", "7", "8"].contains(board[row][col])){
+    } else if (["1", "2", "3", "4", "5", "6", "7", "8"]
+        .contains(board[row][col])) {
       numFlags++;
       board[row][col] += "F";
-    }
-    else if(board[row][col] == "N"){
+    } else if (board[row][col] == "N") {
       numFlags--;
       board[row][col] = "B";
-    }
-    else if(board[row][col] == "F"){
+    } else if (board[row][col] == "F") {
       numFlags--;
       board[row][col] = " ";
-    }
-    else if(board[row][col].length > 1 && board[row][col][1] == "F"){
+    } else if (board[row][col].length > 1 && board[row][col][1] == "F") {
       numFlags--;
       board[row][col] = board[row][col][0];
     }
     notifyListeners();
 
-    if(nicePlacedFlags() == int.parse(numMines)){
+    if (nicePlacedFlags() == int.parse(numMines)) {
       gameIsOver = true;
       gameWinner = true;
     }
   }
 
   void playMove(int row, int col) {
-    if(board[row][col] == "B"){
+    if (board[row][col] == "B") {
       gameIsOver = true;
       gameWinner = false;
-    }else{
+    } else {
       showCells(row, col);
     }
-    
   }
 
-  int nicePlacedFlags(){
+  int nicePlacedFlags() {
     int sizeB = int.parse(sizeBoard[0]);
     int cont = 0;
     for (int i = 0; i < sizeB; ++i) {
       for (int j = 0; j < sizeB; ++j) {
-        if(board[i][j] == "N") cont++;
+        if (board[i][j] == "N") cont++;
       }
     }
     return cont;
@@ -271,15 +265,15 @@ class AppData with ChangeNotifier {
     // Força simular un loading
     await Future.delayed(const Duration(milliseconds: 500));
 
-    Image tmpPlayer = Image.asset('assets/images/player.png');
-    Image tmpOpponent = Image.asset('assets/images/opponent.png');
+    Image tmpFlag = Image.asset('assets/images/flag.png');
+    Image tmpBomb = Image.asset('assets/images/bomb.png');
 
     // Carrega les imatges
     if (context.mounted) {
-      imagePlayer = await convertWidgetToUiImage(tmpPlayer);
+      imageFlag = await convertWidgetToUiImage(tmpFlag);
     }
     if (context.mounted) {
-      imageOpponent = await convertWidgetToUiImage(tmpOpponent);
+      imageBomb = await convertWidgetToUiImage(tmpBomb);
     }
 
     imagesReady = true;
